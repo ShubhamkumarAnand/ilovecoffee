@@ -1,10 +1,12 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   HttpCode,
   HttpStatus,
   Param,
+  Patch,
   Post,
   Res,
 } from '@nestjs/common';
@@ -28,5 +30,19 @@ export class CoffeesController {
   @HttpCode(HttpStatus.CREATED)
   createCoffees(@Body() body) {
     return body;
+  }
+
+  /**
+   * Put: Replace the entire resource because of this we need to have entire obj in the req payload
+   * Patch: only modifies the resource partially like single property of an object
+   */
+  @Patch(':id')
+  updateCoffee(@Param('id') id: string, @Body() body) {
+    return `This returns the ${id} as well as ${body.name}`;
+  }
+
+  @Delete(':id')
+  removeCoffee(@Param('id') id: string) {
+    return `Coffee with #${id} deleted`;
   }
 }
