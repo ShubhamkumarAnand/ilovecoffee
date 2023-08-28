@@ -8,14 +8,15 @@ import {
   Param,
   Patch,
   Post,
-  Res,
+  Query,
 } from '@nestjs/common';
 
 @Controller('coffees')
 export class CoffeesController {
   @Get()
-  getAllCoffees(@Res() response) {
-    response.status(200).send('All the variety of coffee');
+  getAllCoffees(@Query() paginationQuery) {
+    const { limit, offset } = paginationQuery;
+    return `All the variety of coffee. Limit ${limit} & Offset ${offset}`;
   }
 
   @Get(':id')
