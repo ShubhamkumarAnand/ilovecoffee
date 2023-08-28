@@ -10,6 +10,8 @@ import {
   Post,
 } from '@nestjs/common';
 import { CoffeesService } from 'src/coffees/coffees.service';
+import { CreateCoffeeDto } from 'src/coffees/dto/create-coffee.dto';
+import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
 
 @Controller('coffees')
 export class CoffeesController {
@@ -30,8 +32,8 @@ export class CoffeesController {
    */
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  createCoffees(@Body() body) {
-    return this.coffeesService.createOne(body);
+  createCoffees(@Body() createCoffeeDto: CreateCoffeeDto) {
+    return this.coffeesService.createOne(createCoffeeDto);
   }
 
   /**
@@ -39,8 +41,11 @@ export class CoffeesController {
    * Patch: only modifies the resource partially like single property of an object
    */
   @Patch(':id')
-  updateCoffee(@Param('id') id: string, @Body() body) {
-    return this.coffeesService.updateCoffee(id, body);
+  updateCoffee(
+    @Param('id') id: string,
+    @Body() updateCoffeeDt0: UpdateCoffeeDto,
+  ) {
+    return this.coffeesService.updateCoffee(id, updateCoffeeDt0);
   }
 
   @Delete(':id')
