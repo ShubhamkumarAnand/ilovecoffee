@@ -1,10 +1,19 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Get,
+  HttpCode,
+  HttpStatus,
+  Param,
+  Post,
+  Res,
+} from '@nestjs/common';
 
 @Controller('coffees')
 export class CoffeesController {
   @Get()
-  getAllCoffees() {
-    return 'All the variety of coffee';
+  getAllCoffees(@Res() response) {
+    response.status(200).send('All the variety of coffee');
   }
 
   @Get(':id')
@@ -16,6 +25,7 @@ export class CoffeesController {
    * When you access specific properties you'll not validate other properties
    */
   @Post()
+  @HttpCode(HttpStatus.CREATED)
   createCoffees(@Body() body) {
     return body;
   }
