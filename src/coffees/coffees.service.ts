@@ -33,7 +33,7 @@ export class CoffeesService {
 
   updateCoffee(id: string, updateCoffeeDto: any) {
     const coffee = this.findOne(id);
-    throw 'A random error';
+    // throw 'A random error';
     if (coffee) {
       return coffee;
     }

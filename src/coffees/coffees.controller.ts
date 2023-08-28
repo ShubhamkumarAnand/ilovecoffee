@@ -33,7 +33,8 @@ export class CoffeesController {
   @Post()
   @HttpCode(HttpStatus.CREATED)
   createCoffees(@Body() createCoffeeDto: CreateCoffeeDto) {
-    return this.coffeesService.createOne(createCoffeeDto);
+    this.coffeesService.createOne(createCoffeeDto);
+    return createCoffeeDto;
   }
 
   /**
