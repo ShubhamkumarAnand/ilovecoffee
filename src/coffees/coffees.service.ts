@@ -2,7 +2,7 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateCoffeeDto } from 'src/coffees/dto/create-coffee.dto';
 import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
-import { Coffee } from 'src/coffees/entity/coffee.entity';
+import { Coffee } from 'src/coffees/entities/coffee.entity';
 import { Repository } from 'typeorm';
 
 @Injectable()
@@ -30,6 +30,7 @@ export class CoffeesService {
       where: {
         id: +id,
       },
+      relations: ['flavours'],
     });
     if (!coffee) {
       throw new NotFoundException(`Coffee with id #${id} doesn't found`);
