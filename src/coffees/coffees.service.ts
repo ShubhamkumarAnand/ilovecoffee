@@ -5,7 +5,8 @@ import { UpdateCoffeeDto } from 'src/coffees/dto/update-coffee.dto';
 import { Coffee } from 'src/coffees/entities/coffee.entity';
 import { Flavor } from 'src/coffees/entities/flavor.entity';
 import { PaginationQueryDto } from 'src/common/dto/pagination-query.dto';
-import { Repository } from 'typeorm';
+import { Connection, Repository } from 'typeorm';
+import { Event } from 'src/events/entities/event.entity';
 
 @Injectable()
 export class CoffeesService {
@@ -14,6 +15,7 @@ export class CoffeesService {
     private readonly coffeeRepository: Repository<Coffee>,
     @InjectRepository(Flavor)
     private readonly flavorRepository: Repository<Flavor>,
+    private readonly connection: Connection,
   ) {}
 
   findAll(paginationQuery: PaginationQueryDto) {
@@ -81,5 +83,28 @@ export class CoffeesService {
       return existingFlavor;
     }
     return this.flavorRepository.save({ name });
+  }
+
+  async recommendedCoffee(coffee: Coffee) {
+    const queryRunner = this.connection.createQueryRunner();
+    await queryRunner.connect();
+    await queryRunner.startTransaction();
+
+    try {
+      coffee.recommendations++;
+      const recommendedEvent = new Event();
+      recommendedEvent.name = 'recommended_coffee';
+      recommendedEvent.type = 'coffee';
+      recommendedEvent.payload = { coffeeId: coffee.id };
+
+      await queryRunner.manager.save(coffee);
+      await queryRunner.manager.save(recommendedEvent);
+
+      await queryRunner.commitTransaction();
+    } catch (error) {
+      await queryRunner.rollbackTransaction();
+    } finally {
+      await queryRunner.release();
+    }
   }
 }
