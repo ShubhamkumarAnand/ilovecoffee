@@ -9,7 +9,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     CoffeesModule,
     TypeOrmModule.forRoot({
       type: 'postgres',
-      url: 'postgresql://postgres:pQmOo6sSiSaaILR0O5CN@containers-us-west-77.railway.app:6642/railway',
+      url: 'postgresql://postgres:FnD0tlSIhdVAFs6ndzAR@containers-us-west-142.railway.app:7554/railway',
       autoLoadEntities: true,
       synchronize: true,
     }),
